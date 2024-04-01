@@ -1,65 +1,74 @@
-import { Component } from "react";
-import './Secundomer2.css'
+import React, { Component } from 'react';
 
 class Secundomer extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
+    this.state = {
+      hour: this.props.hour,
+      minute: this.props.minute,
+      second: this.props.second,
+    };
+    this.timerInterval = null;
+  }
 
-        this.state = {
-            second: props.second || 0,
-            minute: props.minute || 0,
-            hour: props.hour || 0,
-            soniya: props.soniya || 0,
-        };
-
-        console.log("Secundomer js constructor ishladi");
+  componentDidMount() {
+    if (this.props.isRunning) {
+      this.startTimer();
     }
+  }
 
-    componentDidMount() {
-        this.interval = setInterval(() => {
-            this.setState((state) => {
-                let newSecond = state.second + 1;
-                let newMinute = state.minute;
-                let newHour = state.hour;
-
-                if (newSecond === 60) {
-                    newSecond = 0;
-                    newMinute++;
-                }
-                if (newMinute === 60) {
-                    newMinute = 0;
-                    newHour++;
-                }
-                if (newHour === 24) {
-                    newHour = 0;
-                }
-
-                return {
-                    second: newSecond,
-                    minute: newMinute,
-                    hour: newHour,
-                    soniya: state.soniya + 1
-                };
-            });
-        }, 1000);
+  componentDidUpdate(prevProps) {
+    if (prevProps.isRunning !== this.props.isRunning) {
+      if (this.props.isRunning) {
+        this.startTimer();
+      } else {
+        this.stopTimer();
+      }
     }
+  }
 
-    componentWillUnmount() {
-        clearInterval(this.interval);
-    }
+  componentWillUnmount() {
+    this.stopTimer();
+  }
 
-    getNormalTime = (n) => (n < 10 ? "0" + n : n);
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      if (this.state.second === 0 && this.state.minute === 0 && this.state.hour === 0) {
+        this.stopTimer();
+        return;
+      }
+      let second = this.state.second;
+      let minute = this.state.minute;
+      let hour = this.state.hour;
+      
+      if (second === 0) {
+        if (minute === 0) {
+          hour--;
+          minute = 59;
+        } else {
+          minute--;
+        }
+        second = 59;
+      } else {
+        second--;
+      }
+      
+      this.setState({ hour, minute, second });
+    }, 1000);
+  }
 
-    render() {
-        console.log("Secundomer js render ishladi");
-        return (
-            <h1 className="display-1 fw-bold">
-                {this.getNormalTime(this.state.hour)}:
-                {this.getNormalTime(this.state.minute)}:
-                {this.getNormalTime(this.state.second)}
-            </h1>
-        );
-    }
+  stopTimer() {
+    clearInterval(this.timerInterval);
+  }
+
+  render() {
+    const { hour, minute, second } = this.state;
+    return (
+      <div>
+        <h1 className='h1 text-bolt'>{hour < 10 ? '0' + hour : hour} : {minute < 10 ? '0' + minute : minute} : {second < 10 ? '0' + second : second}</h1>
+      </div>
+    );
+  }
 }
 
 export default Secundomer;
