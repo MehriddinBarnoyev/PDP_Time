@@ -1,25 +1,32 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
+import './../node_modules/bootstrap/dist/css/bootstrap.min.css'
+import { Component } from 'react';
+import Secundomer from './Components/Secundomer2';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props)
+
+    console.log("App js constructor ishladi");
+  }
+
+  render() {
+    console.log("App js render ishladi");
+    return (
+
+      <div className="container py-5 text-center">
+        <Secundomer hour={2} minute={20} second={0}></Secundomer>
+        <div className='justify-content-between'>
+          <button  className='me-3 btn btn-outline-danger text-dark'>Pause</button>
+          <button className='btn btn-outline-success text-dark'>Start</button>
+          <button  className='ms-3 btn btn-outline-primary text-dark'>Restart</button>
+
+        </div>
+
+      </div>
+    );
+  }
 }
 
 export default App;
